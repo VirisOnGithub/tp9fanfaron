@@ -1,0 +1,11 @@
+EVENEMENT: id, type, nom, heure, date, duree, lieu, description
+INSCRIRE, 0N FANFARON, 1N EVENEMENT, 0N PUPITRE: statut
+PUPITRE: id, nom
+
+AVOIR, 11 FANFARON, 11 HACHAGE
+FANFARON: id_Technique, 1_identifiant, 1_email, mdp, prenom, nom, genre, contrainte_Alimentaire, date_Creation, date_Derniere_Connexion, est_Admin
+APPARTENIR, 0N FANFARON, 1N PUPITRE
+
+HACHAGE: id_Technique, cle
+PARTICIPER, 0N FANFARON, 1N GROUPE
+GROUPE: id, nom

@@ -1,0 +1,38 @@
+{
+  "width": 453,
+  "height": 526,
+  "cx": [
+    [ "EVENEMENT", 67 ],
+    [ "INSCRIRE", 223 ],
+    [ "PUPITRE", 398 ],
+    [ "AVOIR", 67 ],
+    [ "FANFARON", 223 ],
+    [ "APPARTENIR", 398 ],
+    [ "HACHAGE", 67 ],
+    [ "PARTICIPER", 223 ],
+    [ "GROUPE", 398 ]
+  ],
+  "cy": [
+    [ "EVENEMENT", 94 ],
+    [ "INSCRIRE", 94 ],
+    [ "PUPITRE", 94 ],
+    [ "AVOIR", 314 ],
+    [ "FANFARON", 314 ],
+    [ "APPARTENIR", 314 ],
+    [ "HACHAGE", 483 ],
+    [ "PARTICIPER", 483 ],
+    [ "GROUPE", 483 ]
+  ],
+  "shift": [
+    [ "INSCRIRE,FANFARON,0", 0 ],
+    [ "INSCRIRE,EVENEMENT,0", 0 ],
+    [ "INSCRIRE,PUPITRE,0", 0 ],
+    [ "AVOIR,FANFARON,0", 0 ],
+    [ "AVOIR,HACHAGE,0", 0 ],
+    [ "APPARTENIR,FANFARON,0", 0 ],
+    [ "APPARTENIR,PUPITRE,0", 0 ],
+    [ "PARTICIPER,FANFARON,0", 0 ],
+    [ "PARTICIPER,GROUPE,0", 0 ]
+  ],
+  "ratio": []
+}
