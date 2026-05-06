@@ -6,7 +6,7 @@ public class Event {
 
     ///// Attributes
 
-    private String id;
+    private Integer id;
     private String type;
     private String name;
     private LocalDateTime dateTime;
@@ -16,7 +16,7 @@ public class Event {
 
     ///// Constructor
 
-    public Event(String id, String type, String name, LocalDateTime dateTime, Integer lengthInMinutes, String place, String description) {
+    public Event(Integer id, String type, String name, LocalDateTime dateTime, Integer lengthInMinutes, String place, String description) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -30,11 +30,11 @@ public class Event {
 
     ///// Getters and Setters
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

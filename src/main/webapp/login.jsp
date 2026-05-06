@@ -1,17 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>Connexion</title>
 </head>
 <body>
-    <form method="post">
-        <label for="username">Username or email:</label>
+<%
+    String errorMessage = (String) request.getAttribute("error");
+%>
+    <h2>Login</h2>
+    <% if (errorMessage != null) { %>
+        <p style="color: red;"><%= errorMessage %></p>
+    <% } %>
+    <form method="post" action="login">
+        <label for="username">Nom d'utilisateur ou email:</label>
         <input type="text" id="username" name="username" required><br><br>
 
-        <label for="password">Password:</label>
+        <label for="password">Mot de passe:</label>
         <input type="password" id="password" name="password" required><br><br>
 
-        <input type="submit" value="Login">
+        <input type="submit" value="Se connecter">
     </form>
 </body>
 </html>

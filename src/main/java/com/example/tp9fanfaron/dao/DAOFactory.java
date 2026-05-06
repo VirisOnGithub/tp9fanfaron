@@ -13,4 +13,12 @@ public class DAOFactory {
     public static GroupDAO getGroupDAO() {
         return GroupDAO.getInstance();
     }
+
+    public static FanfaronDAO getFanfaronDAO() {
+        return FanfaronDAO.getInstance();
+    }
+
+    public static HashDAO getHashDAO() {
+        return HashDAO.getInstance();
+    }
 }

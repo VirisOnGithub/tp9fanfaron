@@ -4,12 +4,12 @@ public class Hash {
 
     ///// Attributes
 
-    private String id;
+    private Integer id;
     private String key;
 
     ///// Constructor
 
-    public Hash(String id, String key) {
+    public Hash(Integer id, String key) {
         this.id = id;
         this.key = key;
     }
@@ -18,11 +18,11 @@ public class Hash {
 
     ///// Getters and Setters
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

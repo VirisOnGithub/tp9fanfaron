@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnectionManager {
-    private static final String URL = "jdbc:postgresql://localhost:5432/devdb";
+    private static final String URL = "jdbc:postgresql://localhost:5432/tp9";
     private static final String USER = "webuser";
     private static final String PASSWORD = "webpass";
 
