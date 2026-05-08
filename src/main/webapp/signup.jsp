@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.example.tp9fanfaron.model.Fanfaron" %><%--
   Created by IntelliJ IDEA.
   User: clement
   Date: 05/05/2026
@@ -20,6 +20,8 @@
     String surname = (String) request.getAttribute("surname");
     String gender = (String) request.getAttribute("gender");
     String dietaryConstraints = (String) request.getAttribute("dietaryConstraints");
+
+    Fanfaron f = (Fanfaron) request.getSession().getAttribute("fanfaron");
 %>
 <% if (errorMessage != null) { %>
 <p style="color: red;"><%= errorMessage %></p>
@@ -49,6 +51,15 @@
 
         <label for="dietaryConstraints">Contraintes alimentaires</label>
         <input type="text" id="dietaryConstraints" name="dietaryConstraints" value="<%= dietaryConstraints != null ? dietaryConstraints : "" %>"><br><br>
+
+        <%
+            if (f != null && f.getIsAdmin()) {
+        %>
+        <label for="isAdmin">Admin:</label><br>
+        <input type="checkbox" id="isAdmin" name="isAdmin" <%= f.getIsAdmin() ? "checked" : "" %>><br><br>
+        <%
+            }
+        %>
 
         <input type="submit" value="S'inscrire">
     </form>

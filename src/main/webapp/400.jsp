@@ -16,5 +16,6 @@
 %>
 <h1>Erreur 400 - Bad Request</h1>
 <p><%= error != null ? error : "Une erreur est survenue." %></p>
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

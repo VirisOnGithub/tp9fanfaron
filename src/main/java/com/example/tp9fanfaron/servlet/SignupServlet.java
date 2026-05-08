@@ -22,13 +22,15 @@ public class SignupServlet extends HttpServlet {
         String surname = req.getParameter("surname");
         String gender = req.getParameter("gender");
         String dietaryConstraints = req.getParameter("dietaryConstraints");
+        Boolean isAdmin = "on".equals(req.getParameter("isAdmin"));
+
+        Fanfaron connectedFanfaron = (Fanfaron) req.getSession().getAttribute("fanfaron");
 
         // This fanfaron has its plain password as password, but the DAO will hash it before saving it to the database
-        Fanfaron f = new Fanfaron(0, username, email, name, surname, gender, dietaryConstraints, null, null, false, password);
+        Fanfaron f = new Fanfaron(0, username, email, name, surname, gender, dietaryConstraints, null, null, isAdmin && connectedFanfaron != null && connectedFanfaron.getIsAdmin(), password);
         try {
             DAOFactory.getFanfaronDAO().create(f);
-            // After successful signup, redirect to login page
-            resp.sendRedirect("login.jsp");
+            resp.sendRedirect(connectedFanfaron != null && connectedFanfaron.getIsAdmin() ? "./?action=admin" : "./?action=me");
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "Une erreur est survenue lors de la création du compte. Veuillez réessayer.");

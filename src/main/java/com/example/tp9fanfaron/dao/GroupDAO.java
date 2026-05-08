@@ -38,7 +38,7 @@ public class GroupDAO {
 
             while (rs.next()) {
                 Group group = new Group(
-                        rs.getInt("id_technique"),
+                        rs.getInt("id"),
                         rs.getString("nom")
                 );
 
@@ -52,6 +52,32 @@ public class GroupDAO {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return List.of();
+        }
+    }
+
+    public Boolean belongsToPrestation(int idFanfaron) {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "select count(g.*) from groupe g, participer p where g.nom = 'Commission prestation' and p.id_technique = ? and p.id_groupe = g.id;";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, idFanfaron);
+
+            ResultSet rs = ps.executeQuery();
+
+            boolean belongs = false;
+            if (rs.next()) {
+                belongs = rs.getInt(1) > 0;
+            }
+
+            rs.close();
+            ps.close();
+
+            System.out.println("Fanfaron with id " + idFanfaron + " belongs to Commission prestation: " + belongs);
+
+            return belongs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 }

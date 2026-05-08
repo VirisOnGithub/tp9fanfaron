@@ -280,7 +280,22 @@ public class FanfaronDAO {
 
     public void handleGroupAndSectionInscription(Fanfaron f, List<Group> groups, List<Section> sections) {
         try (Connection conn = dbConnectionManager.getConnection()) {
-            if (!sections.isEmpty()) {
+
+            // Erase every group and section belonging to the fanfaron
+            String queryDeleteSections = "DELETE FROM appartenir WHERE id_technique = ?";
+            PreparedStatement psDeleteSections = conn.prepareStatement(queryDeleteSections);
+            psDeleteSections.setInt(1, f.getId());
+            psDeleteSections.executeUpdate();
+            psDeleteSections.close();
+
+            String queryDeleteGroups = "DELETE FROM participer WHERE id_technique = ?";
+            PreparedStatement psDeleteGroups = conn.prepareStatement(queryDeleteGroups);
+            psDeleteGroups.setInt(1, f.getId());
+            psDeleteGroups.executeUpdate();
+            psDeleteGroups.close();
+
+            // Sections Registration
+            if (sections != null && !sections.isEmpty()) {
                 StringBuilder querySections = new StringBuilder("INSERT INTO appartenir VALUES ");
                 for (Section _s : sections) {
                     querySections.append("(?, ?),");
@@ -302,7 +317,8 @@ public class FanfaronDAO {
                 psSections.close();
             }
 
-            if (!groups.isEmpty()) {
+            // Groups Registration
+            if (groups != null &&!groups.isEmpty()) {
                 StringBuilder queryGroups = new StringBuilder("INSERT INTO participer VALUES ");
                 for (Group _p : groups) {
                     queryGroups.append("(?, ?),");
@@ -325,6 +341,58 @@ public class FanfaronDAO {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Integer> belongingSectionsIds(Integer idFanfaron) {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "SELECT id_pupitre FROM appartenir WHERE id_technique = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idFanfaron);
+
+            ResultSet rs = ps.executeQuery();
+
+            List<Integer> sectionIds = new ArrayList<>();
+
+            while (rs.next()) {
+                sectionIds.add(rs.getInt("id_pupitre"));
+            }
+
+            rs.close();
+            ps.close();
+
+            return sectionIds;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<Integer> belongingGroupsIds(Integer idFanfaron) {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "SELECT id_groupe FROM participer WHERE id_technique = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idFanfaron);
+
+            ResultSet rs = ps.executeQuery();
+
+            List<Integer> sectionIds = new ArrayList<>();
+
+            while (rs.next()) {
+                sectionIds.add(rs.getInt("id_groupe"));
+            }
+
+            rs.close();
+            ps.close();
+
+            return sectionIds;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return List.of();
         }
     }
 }

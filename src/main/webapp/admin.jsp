@@ -57,5 +57,8 @@
 %>
     </tbody>
 </table>
+<a href="./?action=signup">Ajouter un nouvel utilisateur</a><br><br>
+<a href="./?action=logout">Se déconnecter</a>
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

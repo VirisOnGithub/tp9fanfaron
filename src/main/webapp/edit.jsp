@@ -45,5 +45,6 @@
     <input type="submit" value="Enregistrer les modifications">
 </form>
 
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>
