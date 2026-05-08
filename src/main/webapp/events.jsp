@@ -1,5 +1,7 @@
 <%@ page import="com.example.tp9fanfaron.model.Event" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.tp9fanfaron.model.Fanfaron" %>
+<%@ page import="com.example.tp9fanfaron.dao.DAOFactory" %><%--
   Created by IntelliJ IDEA.
   User: clement
   Date: 08/05/2026
@@ -15,6 +17,8 @@
 <h1>Évènements</h1>
 <%
     List<Event> events = (List<Event>) request.getAttribute("events");
+    Fanfaron currentUser = (Fanfaron) session.getAttribute("fanfaron");
+    boolean belongsToPrestation = currentUser != null && DAOFactory.getGroupDAO().belongsToPrestation(currentUser.getId());
     if (events == null || events.isEmpty()) {
 %>
 <p>Aucun évènement n'est disponible pour le moment.</p>
@@ -34,6 +38,12 @@
     </p>
     <p><strong>Lieu:</strong> <%= event.getPlace() %>
     </p>
+    <a href="./?action=eventDetails&id=<%= event.getId() %>">Voir les inscriptions</a>
+    <a href="./?action=registerEvent&id=<%= event.getId() %>">S'inscrire</a>
+    <% if (belongsToPrestation) { %>
+    <a href="./?action=editEvent&id=<%= event.getId() %>">Modifier</a>
+    <a href="./?action=deleteEvent&id=<%= event.getId() %>">Supprimer</a>
+    <% } %>
 </div>
 <% }
 } %>

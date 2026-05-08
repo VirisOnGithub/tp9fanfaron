@@ -1,10 +1,7 @@
 package com.example.tp9fanfaron.controler;
 
 import com.example.tp9fanfaron.dao.DAOFactory;
-import com.example.tp9fanfaron.model.Event;
-import com.example.tp9fanfaron.model.Fanfaron;
-import com.example.tp9fanfaron.model.Group;
-import com.example.tp9fanfaron.model.Section;
+import com.example.tp9fanfaron.model.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -156,6 +153,124 @@ public class Controleur extends HttpServlet {
                     }
                     break;
 
+                case "eventDetails":
+                    if (fSession != null) {
+                        String eventIdStr = req.getParameter("id");
+                        if (eventIdStr != null) {
+                            try {
+                                int eventId = Integer.parseInt(eventIdStr);
+                                Event event = DAOFactory.getEventDAO().findById(eventId);
+                                List<Inscription> inscriptions = DAOFactory.getEventDAO().findInscriptionsByEventId(eventId);
+                                if (event != null) {
+                                    req.setAttribute("event", event);
+                                    req.setAttribute("inscriptions", inscriptions);
+                                    vue = "eventDetails.jsp";
+                                } else {
+                                    req.setAttribute("error", "Événement non trouvé avec l'ID : " + eventId);
+                                    vue = "events.jsp";
+                                }
+                            } catch (NumberFormatException e) {
+                                req.setAttribute("error", "ID d'événement invalide : " + eventIdStr);
+                                vue = "events.jsp";
+                            }
+                        } else {
+                            req.setAttribute("error", "ID d'événement manquant pour afficher les détails.");
+                            vue = "events.jsp";
+                        }
+                    } else {
+                        req.setAttribute("error", "Vous devez être connecté pour accéder à cette page.");
+                        vue = "login.jsp";
+                    }
+                    break;
+
+                case "deleteEvent":
+                    if (fSession != null) {
+                        String eventIdStr = req.getParameter("id");
+                        if (eventIdStr != null) {
+                            try {
+                                int eventId = Integer.parseInt(eventIdStr);
+                                DAOFactory.getEventDAO().delete(eventId);
+                                req.setAttribute("success", "Événement supprimé avec succès !");
+                            } catch (NumberFormatException e) {
+                                req.setAttribute("error", "ID d'événement invalide : " + eventIdStr);
+                            } catch (SQLException e) {
+                                req.setAttribute("error", "Erreur lors de la suppression de l'événement : " + e.getMessage());
+                            } finally {
+                                List<Event> events = null;
+                                try {
+                                    events = DAOFactory.getEventDAO().findAll();
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                req.setAttribute("events", events);
+                                vue = "events.jsp";
+                            }
+                        } else {
+                            req.setAttribute("error", "ID d'événement manquant pour la suppression.");
+                            List<Event> events = null;
+                            try {
+                                events = DAOFactory.getEventDAO().findAll();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            req.setAttribute("events", events);
+                            vue = "events.jsp";
+                        }
+                    } else {
+                        req.setAttribute("error", "Vous devez être connecté pour supprimer un événement.");
+                        vue = "login.jsp";
+                    }
+                    break;
+
+                case "editEvent":
+                    if (fSession != null) {
+                        String eventIdStr = req.getParameter("id");
+                        if (eventIdStr != null) {
+                            try {
+                                int eventId = Integer.parseInt(eventIdStr);
+                                Event event = DAOFactory.getEventDAO().findById(eventId);
+                                if (event != null) {
+                                    req.setAttribute("event", event);
+                                    vue = "editEvent.jsp";
+                                } else {
+                                    req.setAttribute("error", "Événement non trouvé avec l'ID : " + eventId);
+                                    List<Event> events = null;
+                                    try {
+                                        events = DAOFactory.getEventDAO().findAll();
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    req.setAttribute("events", events);
+                                    vue = "events.jsp";
+                                }
+                            } catch (NumberFormatException e) {
+                                req.setAttribute("error", "ID d'événement invalide : " + eventIdStr);
+                                List<Event> events = null;
+                                try {
+                                    events = DAOFactory.getEventDAO().findAll();
+                                } catch (SQLException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                req.setAttribute("events", events);
+                                vue = "events.jsp";
+                            }
+                        } else {
+                            req.setAttribute("error", "ID d'événement manquant pour l'édition.");
+                            List<Event> events = null;
+                            try {
+                                events = DAOFactory.getEventDAO().findAll();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            req.setAttribute("events", events);
+                            vue = "events.jsp";
+                        }
+                    } else {
+                        req.setAttribute("error", "Vous devez être connecté pour éditer un événement.");
+                        vue = "login.jsp";
+                    }
+                    break;
+
                 default:
                     req.setAttribute("error", "Action inconnue : " + action);
                     vue = sessionIsAdmin ? "admin.jsp" : "login.jsp";
@@ -258,6 +373,33 @@ public class Controleur extends HttpServlet {
                     req.setAttribute("fanfaron", fSession);
                     req.setAttribute("isMemberOfPrestationGroup", DAOFactory.getGroupDAO().belongsToPrestation(fSession.getId()));
                     vue = "me.jsp";
+                }
+                break;
+
+            case "editEvent":
+                Integer eventId = Integer.parseInt(req.getParameter("id"));
+                String updatedType = req.getParameter("type");
+                String updatedName = req.getParameter("name");
+                LocalDateTime updatedDate = LocalDateTime.parse(req.getParameter("date"));
+                Integer updatedDuration = Integer.parseInt(req.getParameter("duration"));
+                String updatedLocation = req.getParameter("location");
+                String updatedDescription = req.getParameter("description");
+
+                Event updatedEvent = new Event(eventId, updatedType, updatedName, updatedDate, updatedDuration, updatedLocation, updatedDescription);
+                try {
+                    DAOFactory.getEventDAO().update(updatedEvent);
+                    req.setAttribute("success", "Événement mis à jour avec succès !");
+                } catch (SQLException e) {
+                    req.setAttribute("error", "Erreur lors de la mise à jour de l'événement : " + e.getMessage());
+                } finally {
+                    List<Event> events = null;
+                    try {
+                        events = DAOFactory.getEventDAO().findAll();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    req.setAttribute("events", events);
+                    vue = "events.jsp";
                 }
                 break;
 
