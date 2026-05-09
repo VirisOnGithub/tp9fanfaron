@@ -15,6 +15,7 @@
 </head>
 <body>
 <h1>Évènements</h1>
+<%@ include file="includes/status.jsp" %>
 <%
     List<Event> events = (List<Event>) request.getAttribute("events");
     Fanfaron currentUser = (Fanfaron) session.getAttribute("fanfaron");

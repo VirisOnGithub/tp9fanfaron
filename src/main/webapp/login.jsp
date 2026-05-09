@@ -4,13 +4,8 @@
     <title>Connexion</title>
 </head>
 <body>
-<%
-    String errorMessage = (String) request.getAttribute("error");
-%>
     <h2>Login</h2>
-    <% if (errorMessage != null) { %>
-        <p style="color: red;"><%= errorMessage %></p>
-    <% } %>
+    <%@ include file="includes/status.jsp" %>
     <form method="post" action="login">
         <label for="username">Nom d'utilisateur ou email:</label>
         <input type="text" id="username" name="username" required><br><br>

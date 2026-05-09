@@ -14,12 +14,9 @@
 <body>
 <%
     List<Fanfaron> f = (List<Fanfaron>) request.getAttribute("fanfaronList");
-    String error = (String) request.getAttribute("error");
 %>
 <h1>Panel Admin</h1>
-<% if (error != null) { %>
-    <p style="color: red;"><%= error %></p>
-<% } %>
+<%@ include file="includes/status.jsp" %>
 <table border="1">
     <thead>
         <tr>

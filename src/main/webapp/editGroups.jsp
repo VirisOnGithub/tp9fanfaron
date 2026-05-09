@@ -22,6 +22,7 @@
     List<Integer> fanfaronSectionIds = (List<Integer>) request.getAttribute("fanfaronSections");
 %>
 <h1>Inscription aux différents groupes et pupitres</h1>
+<%@ include file="includes/status.jsp" %>
 <form action="./?action=updateGroups" method="post">
     <input type="hidden" name="id" value="<%= fanfaron.getId() %>" />
     <h2>Groupes</h2>

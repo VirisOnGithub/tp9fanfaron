@@ -271,6 +271,41 @@ public class Controleur extends HttpServlet {
                     }
                     break;
 
+                case "editRegistration":
+                    if (fSession != null) {
+                        String eventIdStr = req.getParameter("id");
+                        if (eventIdStr != null) {
+                            try {
+                                int eventId = Integer.parseInt(eventIdStr);
+                                int fanfaronId = fSession.getId();
+                                Inscription i = DAOFactory.getEventDAO().getInscriptionOnEventId(fanfaronId, eventId);
+                                req.setAttribute("registration", i);
+                                req.setAttribute("eventId", eventId);
+                                List<Section> sectionsForFanfaron = DAOFactory.getSectionDAO().findByFanfaronId(fanfaronId);
+                                req.setAttribute("sectionsForFanfaron", sectionsForFanfaron);
+                                vue = "editRegistration.jsp";
+                            } catch (NumberFormatException e) {
+                                req.setAttribute("error", "ID d'événement invalide : " + eventIdStr);
+                            } catch (SQLException e) {
+                                req.setAttribute("error", "Erreur lors de la récupération de l'inscription : " + e.getMessage());
+                            }
+                        } else {
+                            req.setAttribute("error", "ID d'événement manquant pour la mise à jour du statut.");
+                            List<Event> events = null;
+                            try {
+                                events = DAOFactory.getEventDAO().findAll();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            req.setAttribute("events", events);
+                            vue = "events.jsp";
+                        }
+                    } else {
+                        req.setAttribute("error", "Vous devez être connecté pour éditer une inscription.");
+                        vue = "login.jsp";
+                    }
+                    break;
+
                 default:
                     req.setAttribute("error", "Action inconnue : " + action);
                     vue = sessionIsAdmin ? "admin.jsp" : "login.jsp";
@@ -391,6 +426,29 @@ public class Controleur extends HttpServlet {
                     req.setAttribute("success", "Événement mis à jour avec succès !");
                 } catch (SQLException e) {
                     req.setAttribute("error", "Erreur lors de la mise à jour de l'événement : " + e.getMessage());
+                } finally {
+                    List<Event> events = null;
+                    try {
+                        events = DAOFactory.getEventDAO().findAll();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    req.setAttribute("events", events);
+                    vue = "events.jsp";
+                }
+                break;
+
+            case "updateRegistration":
+                Integer idEvent = Integer.parseInt(req.getParameter("id"));
+                String nameFanfaron = fSession.getName() + " " + fSession.getSurname();
+                String nameSection = req.getParameter("instrument");
+                String newStatus = req.getParameter("status");
+                Inscription inscription = new Inscription(nameFanfaron, nameSection, newStatus);
+                try {
+                    DAOFactory.getEventDAO().updateInscription(inscription, idEvent);
+                    req.setAttribute("success", "Inscription mise à jour avec succès !");
+                } catch (SQLException e) {
+                    req.setAttribute("error", "Erreur lors de la mise à jour de l'inscription : " + e.getMessage());
                 } finally {
                     List<Event> events = null;
                     try {

@@ -16,6 +16,7 @@
 </head>
 <body>
 <h1>Profil de <%= fanfaron.getUsername() %></h1>
+<%@ include file="includes/status.jsp" %>
 <p><strong>Prénom:</strong> <%= fanfaron.getName() %></p>
 <p><strong>Nom:</strong> <%= fanfaron.getSurname() %></p>
 <p><strong>Email:</strong> <%= fanfaron.getEmail() %></p>

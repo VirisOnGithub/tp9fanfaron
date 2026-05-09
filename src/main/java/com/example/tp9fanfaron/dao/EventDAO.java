@@ -47,6 +47,57 @@ public class EventDAO {
         }
     }
 
+    public void updateInscription(Inscription i, Integer eventId) throws SQLException {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "update inscrire set statut = ?, id_pupitre = (select id from pupitre where nom = ?) where id_evenement = ? and id_technique = (select id_technique from fanfaron where prenom || ' ' || nom = ?)";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, i.getStatus());
+            ps.setString(2, i.getInstrument());
+            ps.setInt(3, eventId);
+            ps.setString(4, i.getName());
+
+            int rowsAffected = ps.executeUpdate();
+            ps.close();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Aucune inscription trouvée pour l'évènement id : " + eventId + " et le fanfaron : " + i.getName());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public Inscription getInscriptionOnEventId(Integer idFanfaron, Integer idEvent) throws SQLException {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "select f.prenom || ' ' || f.nom as personne, i.statut, p.nom from inscrire i, fanfaron f, pupitre p where i.id_technique = f.id_technique and i.id_pupitre = p.id and i.id_evenement = ? and f.id_technique = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, idEvent);
+            ps.setInt(2, idFanfaron);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Inscription inscription = new Inscription(
+                    rs.getString("personne"),
+                    rs.getString("nom"),
+                    rs.getString("statut")
+                );
+                rs.close();
+                ps.close();
+                return inscription;
+            } else {
+                rs.close();
+                ps.close();
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
     public Event findById(int eventId) {
         try (Connection conn = dbConnectionManager.getConnection()) {
             String query = "SELECT * FROM evenement WHERE id = ?";

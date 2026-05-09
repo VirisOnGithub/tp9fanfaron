@@ -12,6 +12,7 @@
 </head>
 <body>
 <h1>Création d'un évènement</h1>
+<%@ include file="includes/status.jsp" %>
 <form method="post" action="./?action=createEvent">
     <label for="type">Type de l'évènement:</label><br>
     <select id="type" name="type">

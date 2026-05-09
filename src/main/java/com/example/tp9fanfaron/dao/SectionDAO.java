@@ -52,4 +52,34 @@ public class SectionDAO {
             return List.of();
         }
     }
+
+    public List<Section> findByFanfaronId(int fanfaronId) {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "select p.id, p.nom from pupitre p, appartenir a where p.id = a.id_pupitre and a.id_technique = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, fanfaronId);
+
+            ResultSet rs = ps.executeQuery();
+
+            List<Section> sections = new ArrayList<>();
+
+            while (rs.next()) {
+                Section section = new Section(
+                        rs.getInt("id"),
+                        rs.getString("nom")
+                );
+
+                sections.add(section);
+            }
+
+            rs.close();
+            ps.close();
+
+            return sections;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return List.of();
+        }
+    }
 }

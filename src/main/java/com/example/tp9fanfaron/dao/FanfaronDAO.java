@@ -370,6 +370,8 @@ public class FanfaronDAO {
         }
     }
 
+
+
     public List<Integer> belongingGroupsIds(Integer idFanfaron) {
         try (Connection conn = dbConnectionManager.getConnection()) {
             String query = "SELECT id_groupe FROM participer WHERE id_technique = ?";
