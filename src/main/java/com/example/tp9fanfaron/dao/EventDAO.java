@@ -47,6 +47,44 @@ public class EventDAO {
         }
     }
 
+    public void createInscription(int fanfaronId, int eventId, int pupitreId, String statut) throws SQLException {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String checkPupitre = "select 1 from appartenir where id_technique = ? and id_pupitre = ?";
+            try (PreparedStatement psCheck = conn.prepareStatement(checkPupitre)) {
+                psCheck.setInt(1, fanfaronId);
+                psCheck.setInt(2, pupitreId);
+                try (ResultSet rs = psCheck.executeQuery()) {
+                    if (!rs.next()) {
+                        throw new SQLException("Le fanfaron n'est pas membre de ce pupitre.");
+                    }
+                }
+            }
+
+            String checkExisting = "select 1 from inscrire where id_technique = ? and id_evenement = ?";
+            try (PreparedStatement psExisting = conn.prepareStatement(checkExisting)) {
+                psExisting.setInt(1, fanfaronId);
+                psExisting.setInt(2, eventId);
+                try (ResultSet rs = psExisting.executeQuery()) {
+                    if (rs.next()) {
+                        throw new SQLException("Inscription déjà existante pour cet évènement.");
+                    }
+                }
+            }
+
+            String insert = "insert into inscrire(id_technique, id_evenement, id_pupitre, statut) values (?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(insert)) {
+                ps.setInt(1, fanfaronId);
+                ps.setInt(2, eventId);
+                ps.setInt(3, pupitreId);
+                ps.setString(4, statut);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
     public void updateInscription(Inscription i, Integer eventId) throws SQLException {
         try (Connection conn = dbConnectionManager.getConnection()) {
             String query = "update inscrire set statut = ?, id_pupitre = (select id from pupitre where nom = ?) where id_evenement = ? and id_technique = (select id_technique from fanfaron where prenom || ' ' || nom = ?)";

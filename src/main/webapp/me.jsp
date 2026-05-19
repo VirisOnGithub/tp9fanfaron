@@ -23,11 +23,14 @@
 <p><strong>Genre:</strong> <%= fanfaron.getGender() %></p>
 <p><strong>Contrainte alimentaire:</strong> <%= fanfaron.getAlimentaryConstraint() == null ? "Aucune" : fanfaron.getAlimentaryConstraint() %></p>
 <p><strong>Admin:</strong> <%= fanfaron.getIsAdmin() ? "Oui" : "Non" %></p>
-<a href="./?action=editGroups">Gérer mes groupes et mes pupitres</a><br>
-<a href="./?action=logout">Se déconnecter</a><br>
-<a href="./?action=events">Voir les évènements</a><br>
+<a href="./controller?action=editGroups">Gérer mes groupes et mes pupitres</a><br>
+<% if (fanfaron.getIsAdmin()) { %>
+    <a href="./controller?action=admin">Aller au panel admin</a><br>
+<% } %>
+<a href="./controller?action=logout">Se déconnecter</a><br>
+<a href="./controller?action=events">Voir les évènements</a><br>
 <% if (isMemberOfPrestationGroup) { %>
-    <a href="./?action=createEvent">Proposer un évènement</a>
+    <a href="./controller?action=createEvent">Proposer un évènement</a>
 <% } %>
 <%@ include file="includes/footer.jsp" %>
 </body>

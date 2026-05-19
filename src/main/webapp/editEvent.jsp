@@ -16,7 +16,7 @@
 <body>
 <h1>Modification de l'évènement "<%= event.getName() %>"</h1>
 <%@ include file="includes/status.jsp" %>
-<form action="./?action=editEvent" method="post">
+<form action="./controller?action=editEvent" method="post">
     <input type="hidden" name="id" value="<%= event.getId() %>">
 
     <label for="type">Type de l'évènement:</label><br>

@@ -16,7 +16,7 @@
 %>
 <h1>Modification de l'utilisateur</h1>
 <%@ include file="includes/status.jsp" %>
-<form action="./?action=edit&id=<%= fanfaron.getId() %>" method="post">
+<form action="./controller?action=edit&id=<%= fanfaron.getId() %>" method="post">
     <input type="hidden" name="id" value="<%= fanfaron.getId() %>">
     <label for="username">Nom d'utilisateur:</label><br>
     <input type="text" id="username" name="username" value="<%= fanfaron.getUsername() %>" required><br><br>

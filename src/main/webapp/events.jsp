@@ -39,11 +39,11 @@
     </p>
     <p><strong>Lieu:</strong> <%= event.getPlace() %>
     </p>
-    <a href="./?action=eventDetails&id=<%= event.getId() %>">Voir les inscriptions</a>
-    <a href="./?action=registerEvent&id=<%= event.getId() %>">S'inscrire</a>
+    <a href="./controller?action=eventDetails&id=<%= event.getId() %>">Voir les inscriptions</a>
+    <a href="./controller?action=registerEvent&id=<%= event.getId() %>">S'inscrire</a>
     <% if (belongsToPrestation) { %>
-    <a href="./?action=editEvent&id=<%= event.getId() %>">Modifier</a>
-    <a href="./?action=deleteEvent&id=<%= event.getId() %>">Supprimer</a>
+    <a href="./controller?action=editEvent&id=<%= event.getId() %>">Modifier</a>
+    <a href="./controller?action=deleteEvent&id=<%= event.getId() %>">Supprimer</a>
     <% } %>
 </div>
 <% }

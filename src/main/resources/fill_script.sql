@@ -8,9 +8,9 @@ VALUES (1, 'Trompette'),
        (5, 'Clarinette');
 
 INSERT INTO GROUPE (id, nom)
-VALUES (1, 'Les Cuivres Sauvages'),
-       (2, 'Fanfare Nocturne'),
-       (3, 'Brass Band Lyon');
+VALUES (1, 'Commission prestation'),
+       (2, 'Commission artistique'),
+       (3, 'Commission communication');
 
 INSERT INTO EVENEMENT (id, type, nom, date, duree, lieu, description)
 VALUES (1, 'Concert', 'Fête de la musique', '2026-06-21 20:00:00', 120, 'Lyon Centre', 'Concert en plein air'),
@@ -27,19 +27,19 @@ VALUES (1, crypt('test123', gen_salt('bf'))),
 INSERT INTO FANFARON (id_technique, identifiant, email, prenom, nom, genre,
                       contrainte_Alimentaire, date_Creation, date_Derniere_Connexion,
                       est_Admin, id_mdp)
-VALUES (1, 'user1', 'user1@mail.com', 'Alice', 'Martin', 'F',
+VALUES (1, 'amartin', 'amartin@mail.com', 'Alice', 'Martin', 'F',
         'Aucune', NOW(), NOW(), TRUE, 1),
 
-       (2, 'user2', 'user2@mail.com', 'Bob', 'Durand', 'M',
+       (2, 'bdurand', 'bdurand@mail.com', 'Bob', 'Durand', 'M',
         'Végétarien', NOW(), NOW(), FALSE, 2),
 
-       (3, 'user3', 'user3@mail.com', 'Charlie', 'Lemoine', 'M',
+       (3, 'clemoine', 'clemoine@mail.com', 'Charlie', 'Lemoine', 'M',
         'Sans gluten', NOW(), NOW(), FALSE, 3),
 
-       (4, 'user4', 'user4@mail.com', 'Diane', 'Morel', 'F',
+       (4, 'dmorel', 'dmorel@mail.com', 'Diane', 'Morel', 'F',
         NULL, NOW(), NOW(), FALSE, 4),
 
-       (5, 'user5', 'user5@mail.com', 'Emma', 'Petit', 'F',
+       (5, 'epetit', 'epetit@mail.com', 'Emma', 'Petit', 'F',
         'Vegan', NOW(), NOW(), FALSE, 5);
 
 INSERT INTO PARTICIPER (id_technique, id_groupe)

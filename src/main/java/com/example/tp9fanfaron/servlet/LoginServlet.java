@@ -22,10 +22,10 @@ public class LoginServlet extends HttpServlet {
 
         if (f != null) {
             req.getSession().setAttribute("fanfaron", f);
-            resp.sendRedirect("./?action=" + (f.getIsAdmin() ? "admin" : "me"));
+            resp.sendRedirect("./controller?action=" + (f.getIsAdmin() ? "admin" : "me"));
         } else {
             req.setAttribute("error", "Identifiant ou mot de passe incorrect.");
-            req.getRequestDispatcher("./?action=login").forward(req, resp);
+            req.getRequestDispatcher("./controller?action=login").forward(req, resp);
         }
     }
 }

@@ -1,5 +1,6 @@
 <%@ page import="com.example.tp9fanfaron.model.Event" %>
 <%@ page import="com.example.tp9fanfaron.model.Inscription" %>
+<%@ page import="com.example.tp9fanfaron.model.Section" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.tp9fanfaron.model.Fanfaron" %><%--
   Created by IntelliJ IDEA.
@@ -14,6 +15,8 @@
     Event event = (Event) request.getAttribute("event");
     List<Inscription> inscriptions = (List<Inscription>) request.getAttribute("inscriptions");
     Fanfaron currentUser = (Fanfaron) session.getAttribute("fanfaron");
+    Inscription registration = (Inscription) request.getAttribute("registration");
+    List<Section> sectionsForFanfaron = (List<Section>) request.getAttribute("sectionsForFanfaron");
 %>
 <head>
     <title>Inscription pour l'évènement "<%= event == null ? "" : event.getName() %>"</title>
@@ -70,16 +73,47 @@
         </td>
     </tr>
         <% } %>
-        <%
+</table>
+<%
     }
 %>
+
         <%
-        // Check if the current user is already registered for this event
-        if (inscriptions != null && inscriptions.stream().map(Inscription::getName).anyMatch(name -> name.equals(currentUser.getName() + " " + currentUser.getSurname())) && event != null) {
-        %>
-        <a href="./?action=editRegistration&id=<%= event.getId() %>">Modifier mon inscription</a>
-        <%
-        }
-        %>
+    if (event != null && currentUser != null && registration != null && sectionsForFanfaron != null && !sectionsForFanfaron.isEmpty()) {
+%>
+    <h2>Modifier ma participation</h2>
+    <form action="./controller?action=updateRegistration" method="post">
+        <input type="hidden" name="id" value="<%= event.getId() %>">
+
+        <fieldset>
+            <legend>Pupitre:</legend>
+            <% for (Section section : sectionsForFanfaron) {
+                boolean isChecked = section.getName().equals(registration.getInstrument());
+            %>
+            <div>
+                <input type="radio" id="section_<%= section.getId() %>" name="instrument"
+                       value="<%= section.getName() %>"
+                    <%= isChecked ? "checked" : "" %>>
+                <label for="section_<%= section.getId() %>"><%= section.getName() %>
+                </label>
+            </div>
+            <% } %>
+        </fieldset>
+
+        <label for="status">Statut:</label>
+        <select name="status" id="status">
+            <option value="Confirmé" <%= "Confirmé".equals(registration.getStatus()) ? "selected" : "" %>>Confirmé
+            </option>
+            <option value="En attente" <%= "En attente".equals(registration.getStatus()) ? "selected" : "" %>>En
+                attente
+            </option>
+            <option value="Annulé" <%= "Annulé".equals(registration.getStatus()) ? "selected" : "" %>>Annulé</option>
+        </select>
+        <br>
+        <button type="submit">Mettre à jour</button>
+    </form>
+        <% }
+%>
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

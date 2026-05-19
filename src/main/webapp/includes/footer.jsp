@@ -1,3 +1,3 @@
 <footer style="display: flex; justify-content: center; align-items: center; height: 60px;">
-    <a href="./?action=me">Mon profil</a>
+    <a href="./controller?action=me">Mon profil</a>
 </footer>

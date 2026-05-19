@@ -7,6 +7,7 @@ import com.example.tp9fanfaron.utils.DbConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,45 @@ public class GroupDAO {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public void create(String name) throws SQLException {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String checkExisting = "select 1 from groupe where lower(nom) = lower(?)";
+            try (PreparedStatement psCheck = conn.prepareStatement(checkExisting)) {
+                psCheck.setString(1, name);
+                try (ResultSet rs = psCheck.executeQuery()) {
+                    if (rs.next()) {
+                        throw new SQLException("Un groupe avec ce nom existe déjà.");
+                    }
+                }
+            }
+
+            String insert = "insert into groupe(id, nom) values ((select coalesce(max(id), 0) + 1 from groupe), ?)";
+            try (PreparedStatement ps = conn.prepareStatement(insert)) {
+                ps.setString(1, name);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public void deleteById(int id) throws SQLException {
+        try (Connection conn = dbConnectionManager.getConnection()) {
+            String query = "delete from groupe where id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, id);
+                int rows = ps.executeUpdate();
+                if (rows == 0) {
+                    throw new SQLException("Aucun groupe trouvé avec l'id : " + id);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 }

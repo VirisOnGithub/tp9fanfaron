@@ -30,7 +30,9 @@ public class SignupServlet extends HttpServlet {
         Fanfaron f = new Fanfaron(0, username, email, name, surname, gender, dietaryConstraints, null, null, isAdmin && connectedFanfaron != null && connectedFanfaron.getIsAdmin(), password);
         try {
             DAOFactory.getFanfaronDAO().create(f);
-            resp.sendRedirect(connectedFanfaron != null && connectedFanfaron.getIsAdmin() ? "./?action=admin" : "./?action=me");
+            resp.sendRedirect(connectedFanfaron != null && connectedFanfaron.getIsAdmin()
+                    ? "./controller?action=admin"
+                    : "./controller?action=me");
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "Une erreur est survenue lors de la création du compte. Veuillez réessayer.");

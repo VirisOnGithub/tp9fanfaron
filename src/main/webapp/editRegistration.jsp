@@ -24,7 +24,7 @@
 <% } else { %>
 <h1>Modifier la participation de <%= inscription.getName() %></h1>
 <%@ include file="includes/status.jsp" %>
-<form action="./?action=updateRegistration" method="post">
+<form action="./controller?action=updateRegistration" method="post">
     <input type="hidden" name="id" value="<%= eventId %>">
 
     <fieldset>
@@ -44,9 +44,9 @@
 
     <label for="status">Statut:</label>
     <select name="status" id="status">
-        <option value="Confirmé" <%= inscription.getStatus() == "Confirmé" ? "selected" : "" %>>Confirmé</option>
-        <option value="En attente" <%= inscription.getStatus() == "En attente" ? "selected" : "" %>>En attente</option>
-        <option value="Annulé" <%= inscription.getStatus() == "Annulé" ? "selected" : "" %>>Annulé</option>
+        <option value="Confirmé" <%= "Confirmé".equals(inscription.getStatus()) ? "selected" : "" %>>Confirmé</option>
+        <option value="En attente" <%= "En attente".equals(inscription.getStatus()) ? "selected" : "" %>>En attente</option>
+        <option value="Annulé" <%= "Annulé".equals(inscription.getStatus()) ? "selected" : "" %>>Annulé</option>
     </select>
     <br>
     <button type="submit">Mettre à jour</button>
