@@ -436,6 +436,7 @@ public class Controller extends HttpServlet {
 
         try {
             DAOFactory.getFanfaronDAO().handleGroupAndSectionInscription(dummyFanfaron, groups, sections);
+            req.setAttribute("success", "Groupes et sections mis à jour avec succès !");
         } catch (Exception e) {
             req.setAttribute("error", "Erreur lors de la mise à jour des groupes : " + e.getMessage());
         }

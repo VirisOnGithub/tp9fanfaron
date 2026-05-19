@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 @WebServlet("/signup")
@@ -32,7 +34,7 @@ public class SignupServlet extends HttpServlet {
             DAOFactory.getFanfaronDAO().create(f);
             resp.sendRedirect(connectedFanfaron != null && connectedFanfaron.getIsAdmin()
                     ? "./controller?action=admin"
-                    : "./controller?action=me");
+                    : "./controller?action=login&success=" + URLEncoder.encode("Compte créé avec succès. Veuillez vous connecter.", StandardCharsets.UTF_8));
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", "Une erreur est survenue lors de la création du compte. Veuillez réessayer.");

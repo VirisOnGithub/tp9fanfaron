@@ -15,5 +15,6 @@
 
         <input type="submit" value="Se connecter">
     </form>
+    <p>Pas encore inscrit ? <a href="controller?action=signup">Créer un compte</a></p>
 </body>
 </html>

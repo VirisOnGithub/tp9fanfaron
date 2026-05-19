@@ -46,7 +46,7 @@ CREATE TABLE FANFARON
     est_Admin               BOOLEAN DEFAULT FALSE,
     id_mdp                  INTEGER NOT NULL,
     PRIMARY KEY (id_technique),
-    FOREIGN KEY (id_mdp) REFERENCES HACHAGE (id_mdp)
+    FOREIGN KEY (id_mdp) REFERENCES HACHAGE (id_mdp) ON DELETE CASCADE
 );
 
 CREATE TABLE APPARTENIR
@@ -54,8 +54,8 @@ CREATE TABLE APPARTENIR
     id_technique INTEGER NOT NULL,
     id_pupitre           INTEGER NOT NULL,
     PRIMARY KEY (id_technique, id_pupitre),
-    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique),
-    FOREIGN KEY (id_pupitre) REFERENCES PUPITRE (id)
+    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique) ON DELETE CASCADE,
+    FOREIGN KEY (id_pupitre) REFERENCES PUPITRE (id) ON DELETE CASCADE
 );
 
 CREATE TABLE INSCRIRE
@@ -65,9 +65,9 @@ CREATE TABLE INSCRIRE
     id_pupitre   INTEGER NOT NULL,
     statut       VARCHAR(50),
     PRIMARY KEY (id_technique, id_evenement, id_pupitre),
-    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique),
-    FOREIGN KEY (id_evenement) REFERENCES EVENEMENT (id),
-    FOREIGN KEY (id_pupitre) REFERENCES PUPITRE (id)
+    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique) ON DELETE CASCADE,
+    FOREIGN KEY (id_evenement) REFERENCES EVENEMENT (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_pupitre) REFERENCES PUPITRE (id) ON DELETE CASCADE
 );
 
 CREATE TABLE PARTICIPER
@@ -75,6 +75,6 @@ CREATE TABLE PARTICIPER
     id_technique INTEGER NOT NULL,
     id_groupe           INTEGER NOT NULL,
     PRIMARY KEY (id_technique, id_groupe),
-    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique),
-    FOREIGN KEY (id_groupe) REFERENCES GROUPE (id)
+    FOREIGN KEY (id_technique) REFERENCES FANFARON (id_technique) ON DELETE CASCADE,
+    FOREIGN KEY (id_groupe) REFERENCES GROUPE (id) ON DELETE CASCADE
 );

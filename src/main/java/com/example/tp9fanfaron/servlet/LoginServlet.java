@@ -9,12 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("LoginServlet: doPost called");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
@@ -24,8 +27,9 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute("fanfaron", f);
             resp.sendRedirect("./controller?action=" + (f.getIsAdmin() ? "admin" : "me"));
         } else {
-            req.setAttribute("error", "Identifiant ou mot de passe incorrect.");
-            req.getRequestDispatcher("./controller?action=login").forward(req, resp);
+            // we send a GET request to login, with error
+            String errorMsg = URLEncoder.encode("Identifiant ou mot de passe incorrect.", StandardCharsets.UTF_8);
+            resp.sendRedirect(req.getContextPath() + "/controller?action=login&error=" + errorMsg);
         }
     }
 }
